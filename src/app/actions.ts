@@ -1,4 +1,4 @@
-"""'use server';
+'use server';
 
 import { z } from 'zod';
 import * as xlsx from 'xlsx';
@@ -144,4 +144,3 @@ export async function generateTeams(formData: FormData): Promise<ProcessedResult
     return { success: false, error: 'An unexpected error occurred while processing your file.' };
   }
 }
-""
