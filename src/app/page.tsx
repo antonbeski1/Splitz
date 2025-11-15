@@ -77,8 +77,8 @@ export default function HomePage() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-4">
-      <main className="w-full max-w-2xl">
-        <div className="text-center mb-8">
+      <main className="w-full max-w-2xl space-y-10">
+        <div className="text-center">
           <Logo />
           <p className="text-muted-foreground mt-2">
             Instantly generate random teams from your list.

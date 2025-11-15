@@ -44,10 +44,13 @@ function ResultsPageContent() {
 
   return (
     <div className="w-full max-w-4xl space-y-8">
-      <div className="text-center">
-        <ShieldCheck className="h-16 w-16 text-green-500 mx-auto mb-4" />
+      <div className="text-center space-y-4">
+         <a href="/" aria-label="Go to homepage" className="inline-block">
+          <Logo />
+        </a>
+        <ShieldCheck className="h-16 w-16 text-green-500 mx-auto" />
         <h2 className="text-3xl font-bold tracking-tight">Your Teams are Ready!</h2>
-        <p className="text-muted-foreground mt-2">Download your generated team files below.</p>
+        <p className="text-muted-foreground">Download your generated team files below.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -107,10 +110,9 @@ export default function ResultsPage() {
   return (
     <Suspense fallback={<div className="flex h-screen items-center justify-center">Loading results...</div>}>
       <div className="flex min-h-screen flex-col items-center justify-center p-4 py-16">
-         <div className="absolute top-8">
-            <a href="/" aria-label="Go to homepage"><Logo /></a>
-         </div>
-        <ResultsPageContent />
+        <main className="w-full">
+            <ResultsPageContent />
+        </main>
         <footer className="text-center mt-8 text-sm text-muted-foreground">
           <p>Happy with your teams? Go build something great!</p>
         </footer>
