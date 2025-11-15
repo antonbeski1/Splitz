@@ -7,7 +7,16 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Logo } from '@/components/logo';
 import { useResults } from '@/context/ResultsContext';
-import { downloadFile } from '@/app/actions';
+
+// Helper function to create a downloadable file from a Base64 string.
+function downloadFile(name: string, content: string, contentType: string) {
+    const link = document.createElement("a");
+    link.href = `data:${contentType};base64,${content}`;
+    link.download = name;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
 
 function ResultsPageContent() {
   const router = useRouter();
@@ -29,8 +38,8 @@ function ResultsPageContent() {
   
   const { files } = results;
 
-  const handleDownload = (name: string, content: string) => {
-    downloadFile(name, content);
+  const handleDownload = (name: string, content: string, contentType: string) => {
+    downloadFile(name, content, contentType);
   };
 
   return (
@@ -48,7 +57,7 @@ function ResultsPageContent() {
             <CardDescription>One file with a separate sheet for each team.</CardDescription>
           </CardHeader>
           <CardContent>
-            <Button className="w-full" onClick={() => handleDownload(files.combined.name, files.combined.content)}>
+            <Button className="w-full" onClick={() => handleDownload(files.combined.name, files.combined.content, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')}>
               <Download className="mr-2 h-4 w-4"/>Download .xlsx
             </Button>
           </CardContent>
@@ -60,7 +69,7 @@ function ResultsPageContent() {
             <CardDescription>A zip file containing all individual team sheets.</CardDescription>
           </CardHeader>
           <CardContent>
-            <Button className="w-full" onClick={() => handleDownload(files.zip.name, files.zip.content)}>
+            <Button className="w-full" onClick={() => handleDownload(files.zip.name, files.zip.content, 'application/zip')}>
               <Download className="mr-2 h-4 w-4"/>Download .zip
             </Button>
           </CardContent>
@@ -76,7 +85,7 @@ function ResultsPageContent() {
                 <CardTitle className="text-lg">{team.name}</CardTitle>
               </CardHeader>
               <CardContent>
-                 <Button variant="secondary" className="w-full" onClick={() => handleDownload(team.name, team.content)}>
+                 <Button variant="secondary" className="w-full" onClick={() => handleDownload(team.name, team.content, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')}>
                     <Download className="mr-2 h-4 w-4"/> Download
                 </Button>
               </CardContent>

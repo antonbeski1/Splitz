@@ -27,16 +27,6 @@ type ErrorResult = {
   error: string;
 };
 
-// Helper function to create a downloadable file from a Base64 string.
-// This will be used on the client-side.
-export function downloadFile(name: string, content: string) {
-    const link = document.createElement("a");
-    link.href = `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${content}`;
-    link.download = name;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-}
 
 export async function generateTeams(formData: FormData): Promise<ProcessedResult | ErrorResult> {
   const validatedFields = formSchema.safeParse({
