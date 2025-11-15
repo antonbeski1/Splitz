@@ -13,6 +13,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { Logo } from '@/components/logo';
+import { useResults } from '@/context/ResultsContext'; // Import the useResults hook
 
 const formSchema = z.object({
   teamCount: z.coerce.number().int().min(2, 'Please enter at least 2 teams.'),
@@ -25,6 +26,7 @@ export default function HomePage() {
   const router = useRouter();
   const { toast } = useToast();
   const [fileName, setFileName] = useState('');
+  const { setResults } = useResults(); // Get the setResults function
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -61,7 +63,8 @@ export default function HomePage() {
       const result = await generateTeams(formData);
 
       if (result.success) {
-        router.push(`/results?data=${encodeURIComponent(JSON.stringify(result))}`);
+        setResults(result); // Save results to context
+        router.push(`/results`); // Navigate without URL params
       } else {
         toast({
           variant: 'destructive',

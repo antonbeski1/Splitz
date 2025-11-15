@@ -1,11 +1,7 @@
-import type {Metadata} from 'next';
+'use client';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
-
-export const metadata: Metadata = {
-  title: 'Splitz Team Generator',
-  description: 'Easily split names into random teams. Upload a file, configure your teams, and download the results.',
-};
+import { ResultsProvider } from '@/context/ResultsContext';
 
 export default function RootLayout({
   children,
@@ -20,7 +16,9 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
       </head>
       <body className="font-body antialiased">
-        {children}
+        <ResultsProvider>
+          {children}
+        </ResultsProvider>
         <Toaster />
       </body>
     </html>

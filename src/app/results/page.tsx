@@ -1,40 +1,36 @@
 'use client';
 
-import { Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { Download, FileArchive, FileSpreadsheet, Home, Copy, Check, ShieldCheck } from 'lucide-react';
+import { Suspense, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { Download, FileArchive, FileSpreadsheet, Home, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Logo } from '@/components/logo';
-import { useState } from 'react';
-import type { ProcessedResult } from '@/app/actions';
-
+import { useResults } from '@/context/ResultsContext';
+import { downloadFile } from '@/app/actions';
 
 function ResultsPageContent() {
-  const searchParams = useSearchParams();
   const router = useRouter();
-  const dataString = searchParams.get('data');
-  const [copiedLink, setCopiedLink] = useState<string | null>(null);
+  const { results } = useResults();
 
-  if (!dataString) {
+  useEffect(() => {
+    if (!results) {
+      router.replace('/');
+    }
+  }, [results, router]);
+
+  if (!results) {
     return (
-      <div className="text-center">
-        <p className="text-destructive">No data found. Please generate teams first.</p>
-        <Button onClick={() => router.push('/')} className="mt-4">
-          <Home className="mr-2 h-4 w-4" /> Go Home
-        </Button>
+      <div className="flex h-screen items-center justify-center">
+        <p>Loading results...</p>
       </div>
     );
   }
+  
+  const { files } = results;
 
-  const result: ProcessedResult = JSON.parse(dataString);
-  const { downloadLinks } = result;
-
-  const handleCopy = (path: string) => {
-    const fullUrl = `${window.location.origin}${path}`;
-    navigator.clipboard.writeText(fullUrl);
-    setCopiedLink(path);
-    setTimeout(() => setCopiedLink(null), 2000);
+  const handleDownload = (name: string, content: string) => {
+    downloadFile(name, content);
   };
 
   return (
@@ -52,9 +48,9 @@ function ResultsPageContent() {
             <CardDescription>One file with a separate sheet for each team.</CardDescription>
           </CardHeader>
           <CardContent>
-            <a href={downloadLinks.combined} download>
-              <Button className="w-full"><Download className="mr-2 h-4 w-4"/>Download .xlsx</Button>
-            </a>
+            <Button className="w-full" onClick={() => handleDownload(files.combined.name, files.combined.content)}>
+              <Download className="mr-2 h-4 w-4"/>Download .xlsx
+            </Button>
           </CardContent>
         </Card>
 
@@ -64,9 +60,9 @@ function ResultsPageContent() {
             <CardDescription>A zip file containing all individual team sheets.</CardDescription>
           </CardHeader>
           <CardContent>
-            <a href={downloadLinks.zip} download>
-              <Button className="w-full"><Download className="mr-2 h-4 w-4"/>Download .zip</Button>
-            </a>
+            <Button className="w-full" onClick={() => handleDownload(files.zip.name, files.zip.content)}>
+              <Download className="mr-2 h-4 w-4"/>Download .zip
+            </Button>
           </CardContent>
         </Card>
       </div>
@@ -74,17 +70,14 @@ function ResultsPageContent() {
       <div>
         <h3 className="text-xl font-semibold mb-4 text-center">Individual Team Files</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {downloadLinks.teams.map((team) => (
+          {files.teams.map((team) => (
             <Card key={team.name} className="flex flex-col">
               <CardHeader className="flex-grow">
                 <CardTitle className="text-lg">{team.name}</CardTitle>
               </CardHeader>
-              <CardContent className="flex items-center gap-2">
-                <a href={team.path} download className="flex-grow">
-                  <Button variant="secondary" className="w-full"><Download className="mr-2 h-4 w-4"/> Download</Button>
-                </a>
-                <Button variant="ghost" size="icon" onClick={() => handleCopy(team.path)} aria-label="Copy link">
-                   {copiedLink === team.path ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
+              <CardContent>
+                 <Button variant="secondary" className="w-full" onClick={() => handleDownload(team.name, team.content)}>
+                    <Download className="mr-2 h-4 w-4"/> Download
                 </Button>
               </CardContent>
             </Card>
