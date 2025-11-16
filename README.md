@@ -196,5 +196,6 @@ For issues, questions, or contributions, please:
 
 ---
 
-Made with ❤️ by the Splitz Team
+Made by ANTON BESKI.M
+
 
