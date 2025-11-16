@@ -3,6 +3,7 @@
 A modern, user-friendly web application for randomly dividing lists into balanced teams. Built with Next.js 15, React, and TypeScript.
 
 ![Splitz Logo](public/favicon.ico)
+<img width="1800" height="760" alt="3-devices-black" src="https://github.com/user-attachments/assets/14bd527f-4c5f-4391-8b98-e722ff5f8054" />
 
 ## Features
 
@@ -197,5 +198,6 @@ For issues, questions, or contributions, please:
 ---
 
 Made by ANTON BESKI.M
+
 
 
