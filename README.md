@@ -40,7 +40,7 @@ A modern, user-friendly web application for randomly dividing lists into balance
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/splitz-team-generator.git
+git clone https://github.com/antonbeski1/Splitz
 cd splitz-team-generator
 ```
 
@@ -197,3 +197,4 @@ For issues, questions, or contributions, please:
 ---
 
 Made with ❤️ by the Splitz Team
+
